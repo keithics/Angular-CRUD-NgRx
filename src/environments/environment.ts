@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  baseUrl: 'http://localhost:4200',
+  production: false,
+  // miccoservice hosts
+  hosts:{
+    user: 'http://localhost:8083'
+  }
 };
 
 /*
