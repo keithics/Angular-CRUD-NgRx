@@ -5,8 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { BaseService } from '../../../core/core.service';
-import { FileUploader } from 'ng2-file-upload';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-product-form',
@@ -19,10 +18,11 @@ export class ProductFormComponent implements OnInit {
     price: new FormControl('', [Validators.required]),
     file: new FormControl('', [Validators.required]),
     fileSource: new FormControl('', [Validators.required]),
+    image: new FormControl('', [Validators.required]),
   });
   fileToUpload: File | null = null;
 
-  constructor(public fb: FormBuilder, public baseService: BaseService) {}
+  constructor(private fb: FormBuilder, private service: ProductService) {}
 
   get f() {
     return this.form.controls;
@@ -36,9 +36,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   public submit() {
-    const formData = new FormData();
-    formData.append('file', this.form.get('fileSource')?.value);
-    this.baseService.upload(formData).subscribe(async (response) => {});
+    this.service.add(this.form.value);
   }
 
   onFileChange(event: Event) {
@@ -49,8 +47,13 @@ export class ProductFormComponent implements OnInit {
       this.form.patchValue({
         fileSource: file,
       });
-      this.baseService.upload({ file });
-      console.log('patched');
+      const formData = new FormData();
+      formData.append('file', this.form.get('fileSource')?.value);
+      this.service.upload(formData).subscribe(async (response) => {
+        this.form.patchValue({
+          image: response.Location,
+        });
+      });
     }
   }
 }

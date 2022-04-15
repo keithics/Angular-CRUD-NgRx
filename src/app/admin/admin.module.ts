@@ -9,6 +9,7 @@ import { ProductFormComponent } from './products/product-form/product-form.compo
 import { FileUploadModule } from 'ng2-file-upload';
 import { ModalComponent } from '../modal/modal.component';
 import { SubmitButtonComponent } from '../submit-button/submit-button.component';
+import { GuestModule } from '../guest/guest.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SubmitButtonComponent } from '../submit-button/submit-button.component'
     ReactiveFormsModule,
     FormsModule,
     FileUploadModule,
+    GuestModule,
   ],
 })
 export class AdminModule {}

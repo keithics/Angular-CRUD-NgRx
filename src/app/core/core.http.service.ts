@@ -41,8 +41,8 @@ export class CoreHttpService {
     if (response.status === 422) {
       this.store.dispatch(validationError({ message: response.error.message }));
     } else if (response.status === 401) {
-      // this.authService.logout();
-      // this.router.navigateByUrl('');
+      this.authService.logout();
+      this.router.navigateByUrl('');
     }
     return throwError(response);
   }

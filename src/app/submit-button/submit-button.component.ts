@@ -12,7 +12,5 @@ export class SubmitButtonComponent implements OnInit {
 
   constructor(private readonly store: Store) {}
 
-  ngOnInit(): void {
-    console.log(this.isLoading);
-  }
+  ngOnInit(): void {}
 }

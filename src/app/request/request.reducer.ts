@@ -10,6 +10,7 @@ import {
   invalidToken,
   requestFailure,
   requestInProgress,
+  requestUploading,
   resetRequest,
   saveSuccess,
   validationError,
@@ -24,6 +25,7 @@ const initialState: RequestInterface = {
   message: null,
   isFailure: false,
   isLoading: false,
+  isUploading: false, // shows a blocking modal when uploading
   isValidationError: false,
   isClose: true,
   saveSuccess: false,
@@ -40,6 +42,10 @@ export const requestFeature = createFeature({
     on(requestInProgress, (state) => ({
       ...initialState,
       isLoading: true,
+    })),
+    on(requestUploading, (state) => ({
+      ...initialState,
+      isUploading: true,
     })),
     on(requestFailure, (state) => ({
       ...state,
@@ -76,5 +82,6 @@ export const {
   selectMessage,
   selectTitle,
   selectIsLoading,
+  selectIsUploading,
   selectIsInvalidToken,
 } = requestFeature;

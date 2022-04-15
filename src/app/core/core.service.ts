@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { CoreHttpService } from './core.http.service';
 import { BaseInterface } from './core.interface';
 import { Store } from '@ngrx/store';
-import { requestInProgress, validationError } from '../request/request.actions';
+import {
+  requestInProgress,
+  requestUploading,
+  resetRequest,
+} from '../request/request.actions';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +19,7 @@ export class BaseService {
   public urlPlural: string = '';
   public urlSingular: string = '';
   public api: string = '';
+  public uploadApi: string = environment.hosts.upload;
 
   constructor(
     public http: HttpClient,
@@ -105,15 +111,13 @@ export class BaseService {
   }
 
   upload(data: unknown): Observable<any> {
-    this.store.dispatch(requestInProgress());
+    this.store.dispatch(requestUploading());
     return this.http
-      .post<any>(
-        'http://localhost:8087/image/single',
-        data,
-        this.coreService.httpUploadOptions
-      )
+      .post<any>(this.uploadApi, data, this.coreService.httpUploadOptions)
       .pipe(
-        tap((response) => console.log(response)),
+        tap((response) => {
+          this.store.dispatch(resetRequest());
+        }),
         catchError((err) => of(this.coreService.handleError(err)))
       );
   }

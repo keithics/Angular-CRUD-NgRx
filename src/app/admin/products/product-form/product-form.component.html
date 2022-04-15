@@ -12,6 +12,7 @@
         </p>
       </div>
       <div class="space-y-6 sm:space-y-5">
+        <app-validation-alert></app-validation-alert>
         <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
           <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
             Product Name
@@ -28,6 +29,8 @@
           <div class="mt-1 sm:mt-0 sm:col-span-2">
             <div class="custom-file">
               <input (change)="onFileChange($event)" formControlName="file" type="file" />
+              <input formControlName="image" type="hidden" />
+              <img *ngIf="this.form.get('image')?.value" [src]="this.form.get('image')?.value" alt="preview image" class="w-36" />
             </div>
           </div>
         </div>

@@ -28,3 +28,7 @@ export const resetRequest = createAction(
 export const invalidToken = createAction(
   '[invalidToken Component] invalidToken'
 );
+
+export const requestUploading = createAction(
+  '[requestUploading Component] requestUploading'
+);

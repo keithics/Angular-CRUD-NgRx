@@ -5,10 +5,12 @@
 export const environment = {
   baseUrl: 'http://localhost:4200',
   production: false,
-  // miccoservice hosts
-  hosts:{
-    user: 'http://localhost:8083'
-  }
+  // microservice hosts
+  hosts: {
+    user: 'http://localhost:8083',
+    products: 'http://localhost:8080',
+    upload: 'http://localhost:8087',
+  },
 };
 
 /*

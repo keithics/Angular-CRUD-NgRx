@@ -3,6 +3,7 @@ export interface RequestInterface {
   message: string | null;
   isFailure: boolean;
   isLoading: boolean;
+  isUploading: boolean;
   isValidationError: boolean;
   isClose: boolean;
   saveSuccess: boolean;
