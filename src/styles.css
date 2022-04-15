@@ -4,5 +4,5 @@
 @tailwind utilities;
 
 input.ng-dirty.ng-invalid {
-    @apply border border-red-500
-  }
+  @apply border border-red-500;
+}
