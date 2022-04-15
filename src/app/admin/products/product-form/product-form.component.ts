@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../product.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -14,11 +14,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./product-form.component.css'],
 })
 export class ProductFormComponent implements OnInit {
+  public id: string | null = null;
+
   form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     price: new FormControl('', [Validators.required]),
-    file: new FormControl('', [Validators.required]),
-    fileSource: new FormControl('', [Validators.required]),
+    file: new FormControl(''),
+    fileSource: new FormControl(''),
     image: new FormControl('', [Validators.required]),
   });
   fileToUpload: File | null = null;
@@ -26,6 +28,7 @@ export class ProductFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: ProductService,
+    public route: ActivatedRoute,
     private router: Router
   ) {}
 
@@ -33,7 +36,17 @@ export class ProductFormComponent implements OnInit {
     return this.form.controls;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.id = params.get('id');
+      if (this.id) {
+        this.service.get(this.id).subscribe((data) => {
+          this.id = data._id;
+          this.form.patchValue(data);
+        });
+      }
+    });
+  }
 
   public upload(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -41,7 +54,10 @@ export class ProductFormComponent implements OnInit {
   }
 
   public submit() {
-    this.service.add(this.form.value).subscribe((response) => {
+    const service = this.id
+      ? this.service.update(this.id, this.form.value)
+      : this.service.add(this.form.value);
+    service.subscribe((response) => {
       if (response._id) {
         this.router.navigateByUrl('/admin/products');
       }

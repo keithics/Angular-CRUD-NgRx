@@ -62,7 +62,7 @@
                 <td
                   class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-1"
                 >
-                  <button class="bg-indigo-600 rounded px-2 py-1 text-white">Edit</button>
+                  <a [routerLink]="'/admin/product/' +data._id" class="bg-indigo-600 rounded px-2 py-1 text-white">Edit</a>
                   <button (click)="delete(data._id)" class="bg-red-600 rounded px-2 py-1 text-white">Delete</button>
                 </td>
               </tr>

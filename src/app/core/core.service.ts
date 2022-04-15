@@ -38,9 +38,14 @@ export class BaseService {
   get(id: string): Observable<any> {
     this.store.dispatch(requestInProgress());
     return this.http
-      .get<any>(`${this.api}/${this.moduleName}/`, this.coreService.httpOptions)
+      .get<any>(
+        `${this.api}/${this.moduleName}/${id}`,
+        this.coreService.httpOptions
+      )
       .pipe(
-        tap((response) => console.log(response)),
+        tap((response) => {
+          this.store.dispatch(resetRequest());
+        }),
         catchError((err) => of(this.coreService.handleError(err)))
       );
   }
@@ -54,22 +59,25 @@ export class BaseService {
         this.coreService.httpOptions
       )
       .pipe(
-        tap((response) => console.log(response)),
+        tap((response) => {
+          this.store.dispatch(resetRequest());
+        }),
         catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 
   update(id: string, data: BaseInterface): Observable<any> {
     this.store.dispatch(requestInProgress());
-    console.log('UPDATE.....' + data);
     return this.http
       .put<any>(
-        `${this.api}/${this.moduleName}/`,
+        `${this.api}/${this.moduleName}/${id}`,
         data,
         this.coreService.httpOptions
       )
       .pipe(
-        tap((response) => console.log(response)),
+        tap((response) => {
+          this.store.dispatch(resetRequest());
+        }),
         catchError((err) => of(this.coreService.handleError(err)))
       );
   }
@@ -83,7 +91,9 @@ export class BaseService {
         this.coreService.httpOptions
       )
       .pipe(
-        tap((response) => console.log(response)),
+        tap((response) => {
+          this.store.dispatch(resetRequest());
+        }),
         catchError((err) => of(this.coreService.handleError(err)))
       );
   }
@@ -96,7 +106,9 @@ export class BaseService {
         this.coreService.httpOptions
       )
       .pipe(
-        tap((response) => console.log(response)),
+        tap((response) => {
+          this.store.dispatch(resetRequest());
+        }),
         catchError((err) => of(this.coreService.handleError(err)))
       );
   }

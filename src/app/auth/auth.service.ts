@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private cookieService: CookieService) {}
 
   logout() {
-    this.cookieService.deleteAll();
+    return this.cookieService.deleteAll();
   }
 
   public isLoggedIn() {

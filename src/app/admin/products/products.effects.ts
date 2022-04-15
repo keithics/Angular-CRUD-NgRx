@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, switchMap } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { EMPTY, of, switchMap } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 import {
   productDelete,
   productsLoad,
@@ -10,6 +10,7 @@ import {
 } from './products.action';
 import { ProductService } from './product.service';
 import { modalDeleteCancel } from '../../modal/delete/modal-delete.actions';
+import { CoreHttpService } from '../../core/core.http.service';
 
 @Injectable()
 export class ProductsEffects {
@@ -18,8 +19,11 @@ export class ProductsEffects {
       ofType(productsLoad),
       mergeMap(() =>
         this.productService.paginate({ page: 1 }).pipe(
-          map((data) => productsLoadSuccess(data)),
-          catchError(() => EMPTY)
+          switchMap((response) => [productsLoadSuccess(response)]),
+          catchError((err) => {
+            this.coreService.handleError(err);
+            return EMPTY;
+          })
         )
       )
     )
@@ -42,6 +46,7 @@ export class ProductsEffects {
 
   constructor(
     private actions$: Actions,
-    private productService: ProductService
+    private productService: ProductService,
+    public coreService: CoreHttpService
   ) {}
 }
