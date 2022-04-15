@@ -3,21 +3,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
-import { ProductListComponent } from './admin/products/product-list.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AdminModule } from './admin/admin.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
-import { HttpClientModule } from '@angular/common/http';
-import { ValidationComponent } from './alert/validation/validation.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { reducers } from './redux/store';
 import { GuestModule } from './guest/guest.module';
+import { AuthInterceptor } from './core/core.http-interceptor.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent, NotfoundComponent],
+  declarations: [AppComponent, NotfoundComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -34,7 +34,12 @@ import { GuestModule } from './guest/guest.module';
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
     }),
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}

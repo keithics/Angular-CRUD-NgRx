@@ -1,30 +1,24 @@
-import * as moment from 'moment';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginInterface } from '../guest/login/login.interface';
 import {
   JwtDecodedInterface,
   JwtInterface,
 } from '../guest/login/jwt.interface';
-import { LoginService } from '../guest/login/login.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   redirectUrl: string = '/dashboard';
-  constructor(private http: HttpClient, private loginService: LoginService) {}
-
-  login(email: string, password: string) {
-    const data = { email, password } as LoginInterface;
-    return this.loginService.login(data);
-  }
+  constructor(private cookieService: CookieService) {}
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expires_at');
+    this.cookieService.deleteAll();
   }
 
   public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
+    const expiration = this.getExpiration()
+      ? this.getExpiration() * 1000
+      : Date.now() - 1000;
+    return Date.now() < expiration;
   }
 
   isLoggedOut() {
@@ -32,18 +26,25 @@ export class AuthService {
   }
 
   getExpiration() {
-    const expiration = localStorage.getItem('expires_at');
-    const expiresAt = JSON.parse(expiration!);
-    return moment(expiresAt);
+    const expiration = this.cookieService.get('expires_at') || null;
+    return JSON.parse(expiration!);
+  }
+
+  setCookie(key: string, value: string) {
+    this.cookieService.set(key, value, {
+      secure: true,
+      sameSite: 'Strict',
+      path: '/',
+    });
   }
 
   setSession(authResult: JwtInterface) {
-    const { user, iat } = this.getParsedJwt(
+    const { user, exp } = this.getParsedJwt(
       authResult.token
     ) as JwtDecodedInterface;
-    const expiresAt = moment().add(iat, 'second');
-    localStorage.setItem('user', user.email);
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    this.setCookie('user', user.email);
+    this.setCookie('expires_at', JSON.stringify(exp));
+    this.setCookie('token', authResult.token); //TODO token is invalid in server
   }
 
   getParsedJwt<T extends object = { [k: string]: string | number }>(

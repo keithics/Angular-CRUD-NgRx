@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { CoreHttpService } from './core.http.service';
@@ -21,19 +21,6 @@ export class BaseService {
     protected store: Store
   ) {}
 
-  list(): Observable<any[]> {
-    this.store.dispatch(requestInProgress());
-    return this.http
-      .get<BaseInterface[]>(
-        this.api + this.urlPlural,
-        this.coreService.httpOptions
-      )
-      .pipe(
-        tap((data) => console.log(data)),
-        catchError(this.coreService.handleError)
-      );
-  }
-
   paginate(data: unknown): Observable<any> {
     this.store.dispatch(requestInProgress());
     return this.http
@@ -44,20 +31,7 @@ export class BaseService {
       )
       .pipe(
         tap((datum) => console.log(datum)),
-        catchError(this.coreService.handleError)
-      );
-  }
-
-  count(): Observable<any[]> {
-    this.store.dispatch(requestInProgress());
-    return this.http
-      .get<BaseInterface[]>(
-        this.api + this.urlPlural + '/count',
-        this.coreService.httpOptions
-      )
-      .pipe(
-        tap((data) => console.log(data)),
-        catchError(this.coreService.handleError)
+        catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 
@@ -70,7 +44,7 @@ export class BaseService {
       )
       .pipe(
         tap((response) => console.log(response)),
-        catchError(this.coreService.handleError)
+        catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 
@@ -84,7 +58,7 @@ export class BaseService {
       )
       .pipe(
         tap((response) => console.log(response)),
-        catchError(this.coreService.handleError)
+        catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 
@@ -99,7 +73,7 @@ export class BaseService {
       )
       .pipe(
         tap((response) => console.log(response)),
-        catchError(this.coreService.handleError)
+        catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 
@@ -113,7 +87,7 @@ export class BaseService {
       )
       .pipe(
         tap((response) => console.log(response)),
-        catchError(this.coreService.handleError)
+        catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 
@@ -126,7 +100,21 @@ export class BaseService {
       )
       .pipe(
         tap((response) => console.log(response)),
-        catchError(this.coreService.handleError)
+        catchError((err) => of(this.coreService.handleError(err)))
+      );
+  }
+
+  upload(data: unknown): Observable<any> {
+    this.store.dispatch(requestInProgress());
+    return this.http
+      .post<any>(
+        'http://localhost:8087/image/single',
+        data,
+        this.coreService.httpUploadOptions
+      )
+      .pipe(
+        tap((response) => console.log(response)),
+        catchError((err) => of(this.coreService.handleError(err)))
       );
   }
 }

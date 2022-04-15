@@ -25,14 +25,11 @@ export class GuestGuard implements CanActivate {
   }
 
   checkLogin(url: string): true | UrlTree {
-    if (!this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn()) {
+      this.authService.redirectUrl = url;
+      return this.router.parseUrl('admin');
+    } else {
       return true;
     }
-
-    // Store the attempted URL for redirecting
-    this.authService.redirectUrl = url;
-
-    // Redirect to the login page
-    return this.router.parseUrl('admin');
   }
 }

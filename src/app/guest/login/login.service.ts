@@ -10,6 +10,7 @@ import {
   requestInProgress,
   validationError,
 } from '../../request/request.actions';
+import { LoginInterface } from './login.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ import {
 export class LoginService extends BaseService {
   public override api = environment.hosts.user;
 
-  login(data: BaseInterface): Observable<any> {
+  login(data: LoginInterface): Observable<any> {
     this.store.dispatch(requestInProgress());
     return this.http
       .post<any>(this.api + '/login', data, this.coreService.httpOptions)

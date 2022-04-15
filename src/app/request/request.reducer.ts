@@ -7,6 +7,7 @@ import {
 } from '@ngrx/store';
 import {
   deleteSuccess,
+  invalidToken,
   requestFailure,
   requestInProgress,
   resetRequest,
@@ -60,11 +61,20 @@ export const requestFeature = createFeature({
       ...state,
       deletedSuccess: true,
     })),
+    on(invalidToken, (state) => ({
+      ...state,
+      isInvalidToken: true,
+    })),
     on(resetRequest, () => ({
       ...initialState,
     }))
   ),
 });
 
-export const { selectRequestsState, selectMessage, selectTitle } =
-  requestFeature;
+export const {
+  selectRequestsState,
+  selectMessage,
+  selectTitle,
+  selectIsLoading,
+  selectIsInvalidToken,
+} = requestFeature;

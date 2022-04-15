@@ -5,6 +5,6 @@ export interface JwtInterface {
 }
 
 export interface JwtDecodedInterface {
-  iat: number;
+  exp: number;
   user: UserInterface;
 }

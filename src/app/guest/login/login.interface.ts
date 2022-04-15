@@ -1,6 +1,6 @@
 import { BaseInterface } from '../../core/core.interface';
 
-export interface LoginInterface extends BaseInterface {
+export interface LoginInterface {
   email: string;
   password: string;
 }

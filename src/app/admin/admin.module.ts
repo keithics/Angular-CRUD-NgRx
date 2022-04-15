@@ -2,20 +2,28 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminComponent } from './admin/admin.component';
-import { ManageProductsComponent } from './manage-products/manage-products.component';
-
+import { ProductListComponent } from './products/product-list/product-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductFormComponent } from './products/product-form/product-form.component';
+import { FileUploadModule } from 'ng2-file-upload';
+import { ModalComponent } from '../modal/modal.component';
+import { SubmitButtonComponent } from '../submit-button/submit-button.component';
 
 @NgModule({
   declarations: [
-    AdminDashboardComponent,
     AdminComponent,
-    ManageProductsComponent
+    ProductListComponent,
+    ProductFormComponent,
+    ModalComponent,
+    SubmitButtonComponent,
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
-  ]
+    AdminRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    FileUploadModule,
+  ],
 })
-export class AdminModule { }
+export class AdminModule {}
