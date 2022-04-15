@@ -1,6 +1,20 @@
-# Admin
+# Angular Dashboard Template
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.1.
+Features:
+1. Auth guard for both guest and admin
+2. CRUD
+3. JWT integration
+4. Image Upload
+ 
+Libraries includes:
+1. [NgRx Store](https://ngrx.io/guide/store/why)
+2. [@ngrx/effects](https://ngrx.io/guide/effects)
+3. [Tailwind for CSS](https://tailwindcss.com/)
+
+## Demo
+![Demo](./demo.gif "Demo")
+
+
 
 ## Development server
 
