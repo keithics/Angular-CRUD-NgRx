@@ -8,6 +8,5 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductService extends BaseService {
   public override api = environment.hosts.products;
-  public override urlSingular = 'product';
-  public override urlPlural = 'products';
+  public override moduleName = 'products';
 }

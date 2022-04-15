@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { validationError } from '../request/request.actions';
+import { requestFailure, validationError } from '../request/request.actions';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -42,8 +42,11 @@ export class CoreHttpService {
       this.store.dispatch(validationError({ message: response.error.message }));
     } else if (response.status === 401) {
       this.authService.logout();
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('/');
+    } else {
+      this.store.dispatch(requestFailure());
     }
+
     return throwError(response);
   }
 }

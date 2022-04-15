@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -22,7 +23,11 @@ export class ProductFormComponent implements OnInit {
   });
   fileToUpload: File | null = null;
 
-  constructor(private fb: FormBuilder, private service: ProductService) {}
+  constructor(
+    private fb: FormBuilder,
+    private service: ProductService,
+    private router: Router
+  ) {}
 
   get f() {
     return this.form.controls;
@@ -36,7 +41,11 @@ export class ProductFormComponent implements OnInit {
   }
 
   public submit() {
-    this.service.add(this.form.value);
+    this.service.add(this.form.value).subscribe((response) => {
+      if (response._id) {
+        this.router.navigateByUrl('/admin/products');
+      }
+    });
   }
 
   onFileChange(event: Event) {
@@ -49,11 +58,13 @@ export class ProductFormComponent implements OnInit {
       });
       const formData = new FormData();
       formData.append('file', this.form.get('fileSource')?.value);
-      this.service.upload(formData).subscribe(async (response) => {
-        this.form.patchValue({
-          image: response.Location,
+      this.service
+        .upload(formData, 'image/single')
+        .subscribe(async (response) => {
+          this.form.patchValue({
+            image: response.Location,
+          });
         });
-      });
     }
   }
 }

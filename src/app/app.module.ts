@@ -15,6 +15,8 @@ import { reducers } from './redux/store';
 import { GuestModule } from './guest/guest.module';
 import { AuthInterceptor } from './core/core.http-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductsEffects } from './admin/products/products.effects';
 
 @NgModule({
   declarations: [AppComponent, NotfoundComponent],
@@ -27,6 +29,7 @@ import { CookieService } from 'ngx-cookie-service';
     ReactiveFormsModule,
     FormsModule,
     StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([ProductsEffects]),
     // Instrumentation must be imported after importing StoreModule (config is optional)
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

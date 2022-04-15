@@ -48,27 +48,27 @@ export const requestFeature = createFeature({
       isUploading: true,
     })),
     on(requestFailure, (state) => ({
-      ...state,
+      ...initialState,
       isFailure: true,
       message: 'An error occurred while requesting the API.',
     })),
     on(validationError, (state, { message }) => ({
-      ...state,
+      ...initialState,
       isValidationError: true,
       message,
     })),
     on(saveSuccess, (state, { message, title }) => ({
-      ...state,
+      ...initialState,
       saveSuccess: true,
       message,
       title,
     })),
     on(deleteSuccess, (state) => ({
-      ...state,
+      ...initialState,
       deletedSuccess: true,
     })),
     on(invalidToken, (state) => ({
-      ...state,
+      ...initialState,
       isInvalidToken: true,
     })),
     on(resetRequest, () => ({

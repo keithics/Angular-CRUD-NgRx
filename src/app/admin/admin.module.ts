@@ -7,16 +7,18 @@ import { ProductListComponent } from './products/product-list/product-list.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { FileUploadModule } from 'ng2-file-upload';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalUploadComponent } from '../modal/upload/modal-upload.component';
 import { SubmitButtonComponent } from '../submit-button/submit-button.component';
 import { GuestModule } from '../guest/guest.module';
+import { ModalDeleteComponent } from '../modal/delete/modal-delete.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     ProductListComponent,
     ProductFormComponent,
-    ModalComponent,
+    ModalUploadComponent,
+    ModalDeleteComponent,
     SubmitButtonComponent,
   ],
   imports: [

@@ -16,8 +16,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class BaseService {
-  public urlPlural: string = '';
-  public urlSingular: string = '';
+  public moduleName: string = '';
   public api: string = '';
   public uploadApi: string = environment.hosts.upload;
 
@@ -29,25 +28,17 @@ export class BaseService {
 
   paginate(data: unknown): Observable<any> {
     this.store.dispatch(requestInProgress());
-    return this.http
-      .post<unknown>(
-        this.api + this.urlPlural + '/paginate',
-        data,
-        this.coreService.httpOptions
-      )
-      .pipe(
-        tap((datum) => console.log(datum)),
-        catchError((err) => of(this.coreService.handleError(err)))
-      );
+    return this.http.post<unknown>(
+      `${this.api}/${this.moduleName}/page`,
+      data,
+      this.coreService.httpOptions
+    );
   }
 
   get(id: string): Observable<any> {
     this.store.dispatch(requestInProgress());
     return this.http
-      .get<any>(
-        this.api + this.urlSingular + '/' + id,
-        this.coreService.httpOptions
-      )
+      .get<any>(`${this.api}/${this.moduleName}/`, this.coreService.httpOptions)
       .pipe(
         tap((response) => console.log(response)),
         catchError((err) => of(this.coreService.handleError(err)))
@@ -58,7 +49,7 @@ export class BaseService {
     this.store.dispatch(requestInProgress());
     return this.http
       .post<any>(
-        this.api + this.urlSingular + '/',
+        `${this.api}/${this.moduleName}/`,
         data,
         this.coreService.httpOptions
       )
@@ -73,7 +64,7 @@ export class BaseService {
     console.log('UPDATE.....' + data);
     return this.http
       .put<any>(
-        this.api + this.urlSingular + '/' + id,
+        `${this.api}/${this.moduleName}/`,
         data,
         this.coreService.httpOptions
       )
@@ -87,7 +78,7 @@ export class BaseService {
     this.store.dispatch(requestInProgress());
     return this.http
       .post<any>(
-        this.api + this.urlSingular + '/',
+        `${this.api}/${this.moduleName}/`,
         data,
         this.coreService.httpOptions
       )
@@ -101,7 +92,7 @@ export class BaseService {
     this.store.dispatch(requestInProgress());
     return this.http
       .delete<unknown>(
-        this.api + this.urlSingular + '/' + id,
+        `${this.api}/${this.moduleName}/${id}`,
         this.coreService.httpOptions
       )
       .pipe(
@@ -110,10 +101,14 @@ export class BaseService {
       );
   }
 
-  upload(data: unknown): Observable<any> {
+  upload(data: unknown, type: string): Observable<any> {
     this.store.dispatch(requestUploading());
     return this.http
-      .post<any>(this.uploadApi, data, this.coreService.httpUploadOptions)
+      .post<any>(
+        `${this.uploadApi}/${type}`,
+        data,
+        this.coreService.httpUploadOptions
+      )
       .pipe(
         tap((response) => {
           this.store.dispatch(resetRequest());
