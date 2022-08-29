@@ -18,6 +18,10 @@ export class ProductFormComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
     price: new FormControl('', [Validators.required]),
     file: new FormControl(''),
     fileSource: new FormControl(''),
