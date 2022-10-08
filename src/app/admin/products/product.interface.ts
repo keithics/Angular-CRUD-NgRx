@@ -4,6 +4,7 @@ export interface ProductInterface {
   description: string;
   image: string;
   price: number;
+  priceCurrency: string;
 }
 
 export interface ProductPageInterface {

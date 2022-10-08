@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   hosts: {
-    user: 'http://localhost:8083',
-    products: 'http://localhost:8087', // demo purposes we can hav 1 api for both upload and products
-    upload: 'http://localhost:8087',
+    user: 'http://138.68.63.18:3086/user',
+    products: 'http://138.68.63.18:3086', // demo purposes we can hav 1 api for both upload and products
+    upload: 'http://138.68.63.18:3086',
   },
 };
